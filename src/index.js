@@ -49,7 +49,7 @@ const pizzaData = [
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Header />
       <Menu />
       <Footer />
@@ -66,13 +66,32 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2> Our Menu </h2>
+      <>
+        <p>
+          Delicious and Authentic pizzas directly from Scicily in Italy, the
+          Chef has been greatly inspired by the combination of ingredietns and
+          has presented us with some of the most iconic pizzas from Italy's
+          culinary history.
+        </p>
 
-      <div>{pizzaData.map(Pizza)}</div>
+        {numPizzas > 0 && (
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        )}
+      </>
 
-      {/* <Pizza
+      {/* 
+       <Pizza
         name="Pizza Spinaci"
         ingredients="Tomato, mozarella, spinach, and ricotta cheese"
         price={10}
@@ -96,26 +115,52 @@ function Menu() {
   );
 }
 
-function Pizza(props) {
+function Pizza({ pizzaObj }) {
   return (
-    <div className="pizza">
-      <img src={props.imageName} alt={props.name} />
-      <h3> {props.name} </h3>
-      <p> {props.ingredients} </p>
-      <span>{props.price + 2}</span>
-    </div>
+    <li>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <h3 className="pizza"> {pizzaObj.name} </h3>
+      <p className="pizza"> {pizzaObj.ingredients} </p>
+      <span className="pizza">{pizzaObj.price + 2}</span>
+    </li>
   );
 }
-function Footer() {
-  //   const hour = new Date().getHours();
-  //   const openHour = 12;
-  //   const closeHour = 23;
-  //   //   console.log(hour);
-  //   if (hour >= openHour && hour <= closeHour) alert(`We are open`);
-  //   else alert(`We are closed`);
 
+function Footer() {
+  const hour = new Date().getHours();
+  const openHour = 12;
+  const closeHour = 23;
+  const isOpen = hour >= openHour && hour <= closeHour;
+  //   console.log(hour);
+  // if (hour >= openHour && hour <= closeHour) alert(`We are open`);
+  // else alert(`We are closed`);
+  //    <span> {
+  //     pizzaObj.soldOut ? 'SOLD OUT!' : {pizzaObj.price};
+  //   }
+  //  </span>
   return (
-    <footer>{new Date().toLocaleTimeString()}.We're currently open</footer>
+    <footer className="footer">
+      {" "}
+      {isOpen ? (
+        <Order closeHour={closeHour} openHour={openHour} />
+      ) : (
+        <p>
+          You are welcome to visit between {openHour}:00 & {closeHour}:00{" "}
+        </p>
+      )}
+    </footer>
+  );
+}
+
+function Order({ closeHour, openHour }) {
+  return (
+    <div className="order">
+      <p>
+        We're open from {openHour}:00 till {closeHour}:00, Please come visit or
+        order online.
+      </p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 
